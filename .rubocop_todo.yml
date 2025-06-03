@@ -139,6 +139,8 @@ RSpec/DescribedClass:
 # Configuration parameters: CountAsOne.
 RSpec/ExampleLength:
   Max: 6
+  Exclude:
+    - 'spec/**/*'
 
 # Offense count: 10
 RSpec/ExpectInHook:
@@ -177,11 +179,14 @@ RSpec/NamedSubject:
   Exclude:
     - 'spec/lib/annotate/helpers_spec.rb'
     - 'spec/lib/tasks/annotate_models_migrate_spec.rb'
+    - 'spec/**/*'
 
 # Offense count: 39
 # Configuration parameters: AllowedGroups.
 RSpec/NestedGroups:
   Max: 9
+  Exclude:
+    - 'spec/**/*'
 
 # Offense count: 5
 RSpec/RepeatedExampleGroupBody:
@@ -346,22 +351,10 @@ Style/ZeroLengthPredicate:
 Layout/LineLength:
   Max: 496
 
-RSpec/ExampleLength:
-  Exclude:
-    - 'spec/**/*'
-
 RSpec/MultipleMemoizedHelpers:
   Exclude:
     - 'spec/**/*'
 
 RSpec/InstanceVariable:
-  Exclude:
-    - 'spec/**/*'
-
-RSpec/NamedSubject:
-  Exclude:
-    - 'spec/**/*'
-
-RSpec/NestedGroups:
   Exclude:
     - 'spec/**/*'
