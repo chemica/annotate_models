@@ -156,7 +156,7 @@ module AnnotateModels
       with_comments_column = with_comments_column?(klass, options)
 
       # Precalculate Values
-      cols_meta = cols.map do |col|
+      cols_meta = cols.to_h do |col|
         col_comment = with_comments || with_comments_column ? col.comment&.gsub("\n", '\\n') : nil
         col_type = get_col_type(col)
         attrs = get_attributes(col, col_type, klass, options)
@@ -172,7 +172,7 @@ module AnnotateModels
            col_name: col_name,
            simple_formatted_attrs: simple_formatted_attrs,
            col_comment: col_comment }]
-      end.to_h
+      end
 
       # Output annotation
       bare_max_attrs_length = cols_meta.map { |_, m| m[:simple_formatted_attrs].length }.max
@@ -215,7 +215,7 @@ module AnnotateModels
     end
 
     def get_schema_header_text(klass, options = {})
-      info = String.new("#\n")  # Create a new mutable string
+      info = String.new("#\n") # Create a new mutable string
       if options[:format_markdown]
         info << "# Table name: `#{klass.table_name}`\n"
         info << "#\n"
@@ -658,7 +658,7 @@ module AnnotateModels
         if File.file?(file_path) && Kernel.require(file_path)
           retry
         elsif model_path =~ %r{/}
-          model_path = model_path.split('/')[1..-1].join('/').to_s
+          model_path = model_path.split('/')[1..].join('/').to_s
           retry
         else
           raise

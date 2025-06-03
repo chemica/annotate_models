@@ -17,7 +17,8 @@ rescue StandardError
   require 'active_support/core_ext/blank'
 end
 
-module Annotate
+# Defines the Annotate module
+module Annotate # rubocop:disable Metrics/ModuleLength
   ##
   # Set default values that can be overridden via environment variables.
   #
@@ -95,7 +96,7 @@ module Annotate
       if Rails.version.split('.').first.to_i < 3
         Rails.configuration.eager_load_paths.each do |load_path|
           matcher = /\A#{Regexp.escape(load_path)}(.*)\.rb\Z/
-          Dir.glob("#{load_path}/**/*.rb").sort.each do |file|
+          Dir.glob("#{load_path}/**/*.rb").each do |file|
             require_dependency file.sub(matcher, '\1')
           end
         end

@@ -59,7 +59,7 @@ module AnnotateRoutes
       out << comment
       return out if contents_without_magic_comments.size.zero?
 
-      maxs = [HEADER_ROW.map(&:size)] + contents_without_magic_comments[1..-1].map { |line| line.split.map(&:size) }
+      maxs = [HEADER_ROW.map(&:size)] + contents_without_magic_comments[1..].map { |line| line.split.map(&:size) }
 
       if markdown?
         max = maxs.map(&:max).compact.max
@@ -70,7 +70,7 @@ module AnnotateRoutes
         out << comment(content(contents_without_magic_comments[0], maxs))
       end
 
-      out += contents_without_magic_comments[1..-1].map do |line|
+      out += contents_without_magic_comments[1..].map do |line|
         comment(content(markdown? ? line.split(' ') : line, maxs))
       end
       out << comment(options[:wrapper_close]) if options[:wrapper_close]

@@ -6,10 +6,10 @@ require 'annotate/annotate_routes'
 describe AnnotateRoutes do
   ROUTE_FILE = 'config/routes.rb'
 
-  MESSAGE_ANNOTATED = "#{ROUTE_FILE} was annotated."
-  MESSAGE_UNCHANGED = "#{ROUTE_FILE} was not changed."
-  MESSAGE_NOT_FOUND = "#{ROUTE_FILE} could not be found."
-  MESSAGE_REMOVED = "Annotations were removed from #{ROUTE_FILE}."
+  MESSAGE_ANNOTATED = "#{ROUTE_FILE} was annotated.".freeze
+  MESSAGE_UNCHANGED = "#{ROUTE_FILE} was not changed.".freeze
+  MESSAGE_NOT_FOUND = "#{ROUTE_FILE} could not be found.".freeze
+  MESSAGE_REMOVED = "Annotations were removed from #{ROUTE_FILE}.".freeze
 
   unless const_defined?(:MAGIC_COMMENTS)
     MAGIC_COMMENTS = [
