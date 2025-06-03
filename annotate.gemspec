@@ -5,18 +5,18 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'annotate/version'
 
 Gem::Specification.new do |s|
-  s.name = 'annotate'
+  s.name = 'annot8'
   s.version = Annotate.version
 
   s.required_ruby_version = '>= 3.2.2'
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
-  s.authors = ['Alex Chaffee', 'Cuong Tran', 'Marcos Piccinini', 'Turadg Aleahmad', 'Jon Frisby']
-  s.description = 'Annotates Rails/ActiveRecord Models, routes, fixtures, and others based on the database schema.'
-  s.email = ['alex@stinky.com', 'cuong.tran@gmail.com', 'x@nofxx.com', 'turadg@aleahmad.net', 'jon@cloudability.com']
+  s.authors = ['Alex Chaffee', 'Cuong Tran', 'Marcos Piccinini', 'Turadg Aleahmad', 'Jon Frisby', 'Benjamin Dunkley']
+  s.description = 'Annotates Rails/ActiveRecord Models, routes, fixtures, and others based on the database schema. This fork of the "annotate" gemis built for Rails 8 and Ruby 3.2.2+'
+  s.email = ['ben@chemica.co.uk']
   s.executables = ['annotate']
   s.extra_rdoc_files = ['README.md', 'CHANGELOG.md']
   s.files = `git ls-files -z LICENSE.txt *.md *.gemspec bin lib`.split("\x0")
-  s.homepage = 'https://github.com/ctran/annotate_models'
+  s.homepage = 'https://github.com/chemica/annotate_models'
   s.licenses = ['Ruby']
   s.require_paths = ['lib']
   s.summary = 'Annotates Rails Models, routes, fixtures, and others based on the database schema.'

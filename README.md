@@ -6,6 +6,8 @@
 [![Coveralls](https://coveralls.io/repos/ctran/annotate_models/badge.svg?branch=develop)](https://coveralls.io/r/ctran/annotate_models?branch=develop)
 [![Maintenability](https://codeclimate.com/github/ctran/annotate_models/badges/gpa.svg)](https://codeclimate.com/github/ctran/annotate_models)
 
+**This is a fork of the [annotate](https://github.com/ctran/annotate_models) gem, built for Rails 8 and Ruby 3.2.2+.**
+
 Add a comment summarizing the current schema to the top or bottom of each of your...
 
 - ActiveRecord models
