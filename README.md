@@ -84,7 +84,7 @@ Into Gemfile from rubygems.org:
 
 ```ruby
 group :development do
-  gem 'annotate'
+  gem 'annot8'
 end
 ```
 
@@ -92,17 +92,17 @@ Into Gemfile from Github:
 
 ```ruby
 group :development do
-  gem 'annotate', git: 'https://github.com/ctran/annotate_models.git'
+  gem 'annot8', git: 'https://github.com/chemica/annotate_models.git'
 end
 ```
 
 Into environment gems from rubygems.org:
 
-    gem install annotate
+    gem install annot8
 
 Into environment gems from Github checkout:
 
-    git clone https://github.com/ctran/annotate_models.git annotate_models
+    git clone https://github.com/chemica/annotate_models.git annotate_models
     cd annotate_models
     rake gem
     gem install dist/annotate-*.gem
