@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.2.2'
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
   s.authors = ['Alex Chaffee', 'Cuong Tran', 'Marcos Piccinini', 'Turadg Aleahmad', 'Jon Frisby', 'Benjamin Dunkley']
-  s.description = 'Annotates Rails/ActiveRecord Models, routes, fixtures, and others based on the database schema. This fork of the "annotate" gemis built for Rails 8 and Ruby 3.2.2+'
+  s.description = 'Annotates Rails/ActiveRecord Models, routes, fixtures, and others based on the database schema. This fork of the "annotate" gem is built for Rails 8 and Ruby 3.2.2+'
   s.email = ['ben@chemica.co.uk']
   s.executables = ['annotate']
   s.extra_rdoc_files = ['README.md', 'CHANGELOG.md']
@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.homepage = 'https://github.com/chemica/annotate_models'
   s.licenses = ['Ruby']
   s.require_paths = ['lib']
-  s.summary = 'Annotates Rails Models, routes, fixtures, and others based on the database schema.'
+  s.summary = 'Annotates Rails Models, routes, fixtures, and others based on the database schema. This fork of the "annotate" gem is built for Rails 8 and Ruby 3.2.2+'
 
   s.add_dependency('activerecord', ['>= 8.0.0', '< 9'])
   s.add_dependency('rake', '>= 10.4', '< 14.0')
