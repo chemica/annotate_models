@@ -1,5 +1,15 @@
 Please see https://github.com/ctran/annotate_models/releases for changes between releases.
 
+## 1.0.0
+annot8 fork
+
+ - Bump gem versions
+ - Fix tests and linting
+ - Fix string literals for new Ruby versions
+ - Fix Rails 8 compatibility
+ - Set minimum Rails version to 8
+ - Set minimum Ruby version to 3.2.2
+
 ## 3.1.1
 Changes
 - Bump required ruby version to >= 2.4 [#772](https://github.com/ctran/annotate_models/pull/772)

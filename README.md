@@ -1,12 +1,12 @@
 ## Annotate (aka AnnotateModels)
 
-[![Gem Version](https://badge.fury.io/rb/annotate.svg)](http://badge.fury.io/rb/annotate)
-[![Downloads count](https://img.shields.io/gem/dt/annotate.svg?style=flat)](https://rubygems.org/gems/annotate)
-[![CI Status](https://github.com/ctran/annotate_models/workflows/CI/badge.svg)](https://github.com/ctran/annotate_models/actions?workflow=CI)
-[![Coveralls](https://coveralls.io/repos/ctran/annotate_models/badge.svg?branch=develop)](https://coveralls.io/r/ctran/annotate_models?branch=develop)
-[![Maintenability](https://codeclimate.com/github/ctran/annotate_models/badges/gpa.svg)](https://codeclimate.com/github/ctran/annotate_models)
+[![Gem Version](https://badge.fury.io/rb/annot8.svg)](http://badge.fury.io/rb/annot8)
+[![Downloads count](https://img.shields.io/gem/dt/annotate.svg?style=flat)](https://rubygems.org/gems/annot8)
+[![CI Status](https://github.com/chemica/annotate_models/workflows/CI/badge.svg)](https://github.com/chemica/annotate_models/actions?workflow=CI)
+[![Coveralls](https://coveralls.io/repos/chemica/annotate_models/badge.svg?branch=develop)](https://coveralls.io/r/chemica/annotate_models?branch=develop)
+[![Maintenability](https://codeclimate.com/github/chemica/annotate_models/badges/gpa.svg)](https://codeclimate.com/github/chemica/annotate_models)
 
-**This is a fork of the [annotate](https://github.com/ctran/annotate_models) gem, built for Rails 8 and Ruby 3.2.2+.**
+**This is a fork of the [annotate](https://github.com/chemica/annotate_models) gem, built for Rails 8 and Ruby 3.2.2+.**
 
 Add a comment summarizing the current schema to the top or bottom of each of your...
 
@@ -56,7 +56,7 @@ Also, if you pass the `-r` option, it'll annotate `routes.rb` with the output of
 
 ## Upgrading to 3.X and annotate models not working?
 
-In versions 2.7.X the annotate gem defaulted to annotating models if no arguments were passed in.
+In versions 2.7.X in the original annotate gem, it defaulted to annotating models if no arguments were passed in.
 The annotate gem by default would not allow for routes and models to be annotated together.
 A [change was added in #647](https://github.com/ctran/annotate_models/pull/647).
 You [can read more here](https://github.com/ctran/annotate_models/issues/663).
