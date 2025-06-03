@@ -1,9 +1,11 @@
-require_relative './helpers'
+# frozen_string_literal: true
+
+require_relative 'helpers'
 
 module AnnotateRoutes
   class HeaderGenerator
-    PREFIX = '== Route Map'.freeze
-    PREFIX_MD = '## Route Map'.freeze
+    PREFIX = '== Route Map'
+    PREFIX_MD = '## Route Map'
     HEADER_ROW = ['Prefix', 'Verb', 'URI Pattern', 'Controller#Action'].freeze
 
     class << self
@@ -16,12 +18,12 @@ module AnnotateRoutes
       private
 
       def routes_map(options)
-        result = `rake routes`.chomp("\n").split(/\n/, -1)
+        result = `rake routes`.chomp("\n").split("\n", -1)
 
         # In old versions of Rake, the first line of output was the cwd.  Not so
         # much in newer ones.  We ditch that line if it exists, and if not, we
         # keep the line around.
-        result.shift if result.first =~ %r{^\(in \/}
+        result.shift if result.first =~ %r{^\(in /}
 
         ignore_routes = options[:ignore_routes]
         regexp_for_ignoring_routes = ignore_routes ? /#{ignore_routes}/ : nil
@@ -53,7 +55,7 @@ module AnnotateRoutes
 
       out << comment(options[:wrapper_open]) if options[:wrapper_open]
 
-      out << comment(markdown? ? PREFIX_MD : PREFIX) + timestamp_if_required
+      out << (comment(markdown? ? PREFIX_MD : PREFIX) + timestamp_if_required)
       out << comment
       return out if contents_without_magic_comments.size.zero?
 
@@ -68,7 +70,9 @@ module AnnotateRoutes
         out << comment(content(contents_without_magic_comments[0], maxs))
       end
 
-      out += contents_without_magic_comments[1..-1].map { |line| comment(content(markdown? ? line.split(' ') : line, maxs)) }
+      out += contents_without_magic_comments[1..-1].map do |line|
+        comment(content(markdown? ? line.split(' ') : line, maxs))
+      end
       out << comment(options[:wrapper_close]) if options[:wrapper_close]
 
       out

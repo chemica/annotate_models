@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 # These tasks are added to the project if you install annotate as a Rails plugin.
 # (They are not used to build annotate itself.)
 
 # Append annotations to Rake tasks for ActiveRecord, so annotate automatically gets
 # run after doing db:migrate.
 
-migration_tasks = %w(db:migrate db:migrate:up db:migrate:down db:migrate:reset db:migrate:redo db:rollback)
+migration_tasks = %w[db:migrate db:migrate:up db:migrate:down db:migrate:reset db:migrate:redo db:rollback]
 if defined?(Rails::Application) && Rails.version.split('.').first.to_i >= 6
   require 'active_record'
 
   databases = ActiveRecord::Tasks::DatabaseTasks.setup_initial_database_yaml
 
   ActiveRecord::Tasks::DatabaseTasks.for_each(databases) do |spec_name|
-    migration_tasks.concat(%w(db:migrate db:migrate:up db:migrate:down).map { |task| "#{task}:#{spec_name}" })
+    migration_tasks.concat(%w[db:migrate db:migrate:up db:migrate:down].map { |task| "#{task}:#{spec_name}" })
   end
 end
 
@@ -36,27 +38,27 @@ module Annotate
     @@working = false
 
     def self.update_annotations
-      unless @@working || Annotate::Helpers.skip_on_migration?
-        @@working = true
+      return if @@working || Annotate::Helpers.skip_on_migration?
 
-        self.update_models if Annotate::Helpers.include_models?
-        self.update_routes if Annotate::Helpers.include_routes?
-      end
+      @@working = true
+
+      update_models if Annotate::Helpers.include_models?
+      update_routes if Annotate::Helpers.include_routes?
     end
 
     def self.update_models
-      if Rake::Task.task_defined?("annotate_models")
-        Rake::Task["annotate_models"].invoke
-      elsif Rake::Task.task_defined?("app:annotate_models")
-        Rake::Task["app:annotate_models"].invoke
+      if Rake::Task.task_defined?('annotate_models')
+        Rake::Task['annotate_models'].invoke
+      elsif Rake::Task.task_defined?('app:annotate_models')
+        Rake::Task['app:annotate_models'].invoke
       end
     end
 
     def self.update_routes
-      if Rake::Task.task_defined?("annotate_routes")
-        Rake::Task["annotate_routes"].invoke
-      elsif Rake::Task.task_defined?("app:annotate_routes")
-        Rake::Task["app:annotate_routes"].invoke
+      if Rake::Task.task_defined?('annotate_routes')
+        Rake::Task['annotate_routes'].invoke
+      elsif Rake::Task.task_defined?('app:annotate_routes')
+        Rake::Task['app:annotate_routes'].invoke
       end
     end
   end

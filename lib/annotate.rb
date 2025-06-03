@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'annotate/version'
 require 'annotate/annotate_models'
@@ -21,6 +23,7 @@ module Annotate
   #
   def self.set_defaults(options = {})
     return if @has_set_defaults
+
     @has_set_defaults = true
 
     options = ActiveSupport::HashWithIndifferentAccess.new(options)
@@ -44,20 +47,23 @@ module Annotate
   #
   def self.setup_options(options = {})
     Constants::POSITION_OPTIONS.each do |key|
-      options[key] = Annotate::Helpers.fallback(ENV[key.to_s], ENV['position'], 'before')
+      options[key] = Annotate::Helpers.fallback(ENV.fetch(key.to_s, nil), ENV.fetch('position', nil), 'before')
     end
     Constants::FLAG_OPTIONS.each do |key|
-      options[key] = Annotate::Helpers.true?(ENV[key.to_s])
+      options[key] = Annotate::Helpers.true?(ENV.fetch(key.to_s, nil))
     end
     Constants::OTHER_OPTIONS.each do |key|
-      options[key] = !ENV[key.to_s].blank? ? ENV[key.to_s] : nil
+      options[key] = ENV[key.to_s].blank? ? nil : ENV.fetch(key.to_s, nil)
     end
     Constants::PATH_OPTIONS.each do |key|
-      options[key] = !ENV[key.to_s].blank? ? ENV[key.to_s].split(',') : []
+      options[key] = ENV[key.to_s].blank? ? [] : ENV[key.to_s].split(',')
     end
 
     options[:additional_file_patterns] ||= []
-    options[:additional_file_patterns] = options[:additional_file_patterns].split(',') if options[:additional_file_patterns].is_a?(String)
+    if options[:additional_file_patterns].is_a?(String)
+      options[:additional_file_patterns] =
+        options[:additional_file_patterns].split(',')
+    end
     options[:model_dir] = ['app/models'] if options[:model_dir].empty?
 
     options[:wrapper_open] ||= options[:wrapper]
@@ -111,7 +117,7 @@ module Annotate
       require 'rake/dsl_definition'
     rescue StandardError => e
       # We might just be on an old version of Rake...
-      $stderr.puts e.message
+      warn e.message
       exit e.status_code
     end
     require 'rake'
@@ -119,7 +125,7 @@ module Annotate
     load './Rakefile' if File.exist?('./Rakefile')
     begin
       Rake::Task[:environment].invoke
-    rescue
+    rescue StandardError
       nil
     end
     unless defined?(Rails)

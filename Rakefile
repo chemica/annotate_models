@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 def exit_exception(e)
-  $stderr.puts e.message
+  warn e.message
   exit e.status_code
 end
 
@@ -8,7 +10,7 @@ begin
   require 'bundler'
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
-  $stderr.puts 'Run `bundle install` to install missing gems'
+  warn 'Run `bundle install` to install missing gems'
   exit_exception(e)
 end
 
@@ -28,7 +30,7 @@ require 'mg'
 begin
   MG.new('annotate.gemspec')
 rescue Exception
-  $stderr.puts("WARNING: Couldn't read gemspec.  As such, a number of tasks may be unavailable to you until you run 'rake gem:gemspec' to correct the issue.")
+  warn("WARNING: Couldn't read gemspec.  As such, a number of tasks may be unavailable to you until you run 'rake gem:gemspec' to correct the issue.")
   # Gemspec is probably in a broken state, so let's give ourselves a chance to
   # build a new one...
 end
@@ -54,9 +56,7 @@ namespace :gem do
 
       Bundler.load.dependencies_for(*RUNTIME_GROUPS).each do |dep|
         runtime_resolved = Bundler.definition.specs_for(RUNTIME_GROUPS).find { |spec| spec.name == dep.name }
-        unless runtime_resolved.nil?
-          gem.add_dependency(dep.name, dep.requirement)
-        end
+        gem.add_dependency(dep.name, dep.requirement) unless runtime_resolved.nil?
       end
 
       gem.executables = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
@@ -73,7 +73,7 @@ namespace :gem do
           fn =~ /^pkg/ ||
           fn =~ /^spec/ ||
           fn =~ /^doc/ ||
-          fn =~ /^vendor\/cache/
+          fn =~ %r{^vendor/cache}
       end.sort
     end
     File.open('annotate.gemspec', 'wb') do |fh|
@@ -135,6 +135,7 @@ namespace :integration do
     target_dir = File.expand_path(ENV['TARGET']) if ENV['TARGET']
     raise 'Must specify TARGET=x, where x is an integration test scenario!' unless target_dir && Dir.exist?(target_dir)
     raise 'TARGET directory must be within spec/integration/!' unless target_dir.start_with?(integration_dir)
+
     candidates = {}
     FileList[
       "#{target_dir}/.rvmrc",
@@ -142,14 +143,14 @@ namespace :integration do
     ].select { |fname| !(File.symlink?(fname) || File.directory?(fname)) }
       .map { |fname| fname.sub(integration_dir, '') }
       .reject do |fname|
-        fname =~ /\/\.gitkeep$/ ||
-          fname =~ /\/app\/models\// ||
-          fname =~ /\/routes\.rb$/ ||
-          fname =~ /\/fixtures\// ||
-          fname =~ /\/factories\// ||
+        fname =~ %r{/\.gitkeep$} ||
+          fname =~ %r{/app/models/} ||
+          fname =~ %r{/routes\.rb$} ||
+          fname =~ %r{/fixtures/} ||
+          fname =~ %r{/factories/} ||
           fname =~ /\.sqlite3$/ ||
-          (fname =~ /\/test\// && fname !~ /_helper\.rb$/) ||
-          (fname =~ /\/spec\// && fname !~ /_helper\.rb$/)
+          (fname =~ %r{/test/} && fname !~ /_helper\.rb$/) ||
+          (fname =~ %r{/spec/} && fname !~ /_helper\.rb$/)
       end
       .map { |fname| "#{integration_dir}#{fname}" }
       .each do |fname|
@@ -164,9 +165,11 @@ namespace :integration do
 
     candidates.each_key do |digest|
       next unless fixtures.key?(digest)
+
       candidates[digest].each do |fname|
         # Double-check contents in case of hash collision...
         next unless FileUtils.identical?(fname, fixtures[digest])
+
         destination_dir = Pathname.new(File.dirname(fname))
         relative_target = Pathname.new(fixtures[digest]).relative_path_from(destination_dir)
         Dir.chdir(destination_dir) do

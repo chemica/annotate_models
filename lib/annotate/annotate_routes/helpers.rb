@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module AnnotateRoutes
   module Helpers
-    MAGIC_COMMENT_MATCHER = Regexp.new(/(^#\s*encoding:.*)|(^# coding:.*)|(^# -\*- coding:.*)|(^# -\*- encoding\s?:.*)|(^#\s*frozen_string_literal:.+)|(^# -\*- frozen_string_literal\s*:.+-\*-)/).freeze
+    MAGIC_COMMENT_MATCHER = /(^#\s*encoding:.*)|(^# coding:.*)|(^# -\*- coding:.*)|(^# -\*- encoding\s?:.*)|(^#\s*frozen_string_literal:.+)|(^# -\*- frozen_string_literal\s*:.+-\*-)/
 
     class << self
       # TODO: write the method doc using ruby rdoc formats
@@ -15,7 +17,7 @@ module AnnotateRoutes
         mode = :content
         header_position = 0
 
-        content.split(/\n/, -1).each_with_index do |line, line_number|
+        content.split("\n", -1).each_with_index do |line, line_number|
           if mode == :header && line !~ /\s*#/
             mode = :content
             real_content << line unless line.blank?
@@ -62,7 +64,7 @@ module AnnotateRoutes
         return real_content, :after if header_position >= real_content.count
 
         # and the default
-        return real_content, header_position
+        [real_content, header_position]
       end
     end
   end

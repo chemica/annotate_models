@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../spec_helper'
 
 describe 'ActiveRecord migration rake task hooks' do
@@ -5,7 +7,7 @@ describe 'ActiveRecord migration rake task hooks' do
     Rake.application = Rake::Application.new
 
     # Stub migration tasks
-    %w(db:migrate db:migrate:up db:migrate:down db:migrate:reset db:rollback).each do |task|
+    %w[db:migrate db:migrate:up db:migrate:down db:migrate:reset db:rollback].each do |task|
       Rake::Task.define_task(task)
     end
     Rake::Task.define_task('db:migrate:redo') do
@@ -20,42 +22,42 @@ describe 'ActiveRecord migration rake task hooks' do
   end
 
   describe 'db:migrate' do
-    it 'should update annotations' do
+    it 'updates annotations' do
       expect(Annotate::Migration).to receive(:update_annotations)
       Rake.application.top_level
     end
   end
 
   describe 'db:migrate:up' do
-    it 'should update annotations' do
+    it 'updates annotations' do
       expect(Annotate::Migration).to receive(:update_annotations)
       Rake.application.top_level
     end
   end
 
   describe 'db:migrate:down' do
-    it 'should update annotations' do
+    it 'updates annotations' do
       expect(Annotate::Migration).to receive(:update_annotations)
       Rake.application.top_level
     end
   end
 
   describe 'db:migrate:reset' do
-    it 'should update annotations' do
+    it 'updates annotations' do
       expect(Annotate::Migration).to receive(:update_annotations)
       Rake.application.top_level
     end
   end
 
   describe 'db:rollback' do
-    it 'should update annotations' do
+    it 'updates annotations' do
       expect(Annotate::Migration).to receive(:update_annotations)
       Rake.application.top_level
     end
   end
 
   describe 'db:migrate:redo' do
-    it 'should update annotations after all migration tasks' do
+    it 'updates annotations after all migration tasks' do
       allow(Annotate::Migration).to receive(:update_annotations)
 
       # Confirm that update_annotations isn't called when the original redo task finishes

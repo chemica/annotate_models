@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../spec_helper'
 
 RSpec.describe Annotate::Helpers do
@@ -5,7 +7,7 @@ RSpec.describe Annotate::Helpers do
     subject { described_class.skip_on_migration? }
 
     before do
-      allow(ENV).to receive(:[]).and_return(nil)
+      allow(ENV).to receive(:fetch).and_return(nil)
     end
 
     it { is_expected.to be_falsy }
@@ -15,7 +17,7 @@ RSpec.describe Annotate::Helpers do
       let(:env_value) { '1' }
 
       before do
-        allow(ENV).to receive(:[]).with(key).and_return(env_value)
+        allow(ENV).to receive(:fetch).with(key, nil).and_return(env_value)
       end
 
       it { is_expected.to be_truthy }
@@ -26,7 +28,7 @@ RSpec.describe Annotate::Helpers do
       let(:env_value) { '1' }
 
       before do
-        allow(ENV).to receive(:[]).with(key).and_return(env_value)
+        allow(ENV).to receive(:fetch).with(key, nil).and_return(env_value)
       end
 
       it { is_expected.to be_truthy }
@@ -37,7 +39,7 @@ RSpec.describe Annotate::Helpers do
     subject { described_class.include_routes? }
 
     before do
-      allow(ENV).to receive(:[]).and_return(nil)
+      allow(ENV).to receive(:fetch).and_return(nil)
     end
 
     it { is_expected.to be_falsy }
@@ -47,7 +49,7 @@ RSpec.describe Annotate::Helpers do
       let(:env_value) { '1' }
 
       before do
-        allow(ENV).to receive(:[]).with(key).and_return(env_value)
+        allow(ENV).to receive(:fetch).with(key, nil).and_return(env_value)
       end
 
       it { is_expected.to be_truthy }
@@ -58,7 +60,7 @@ RSpec.describe Annotate::Helpers do
     subject { described_class.include_models? }
 
     before do
-      allow(ENV).to receive(:[]).and_return(nil)
+      allow(ENV).to receive(:fetch).and_return(nil)
     end
 
     it { is_expected.to be_falsy }
@@ -68,7 +70,7 @@ RSpec.describe Annotate::Helpers do
       let(:env_value) { '1' }
 
       before do
-        allow(ENV).to receive(:[]).with(key).and_return(env_value)
+        allow(ENV).to receive(:fetch).with(key, nil).and_return(env_value)
       end
 
       it { is_expected.to be_truthy }
@@ -79,6 +81,7 @@ RSpec.describe Annotate::Helpers do
     subject { described_class.true?(val) }
 
     let(:val) { nil }
+
     it { is_expected.to be_falsy }
 
     context 'when val is blank' do
@@ -94,7 +97,7 @@ RSpec.describe Annotate::Helpers do
         let(:val) { truthy_value }
 
         it "returns truthy for '#{truthy_value}'" do
-          is_expected.to be_truthy
+          expect(subject).to be_truthy
         end
       end
     end
@@ -102,13 +105,14 @@ RSpec.describe Annotate::Helpers do
 
   describe '.fallback' do
     subject { described_class.fallback(*args) }
+
     let(:args) { [arg_1, arg_2] }
 
     let(:arg_1) { '' } # is considered blank
     let(:arg_2) { 'yes' }
 
     it 'returns the first non-blank argument' do
-      is_expected.to eq(arg_2)
+      expect(subject).to eq(arg_2)
     end
 
     context 'when the first argument is non-blank' do
@@ -133,7 +137,7 @@ RSpec.describe Annotate::Helpers do
 
     it 'resets ENV value' do
       expect(ENV).to receive(:[]=).with(included_option.to_s, reset_value)
-      expect(ENV).to_not receive(:[]=).with(excluded_option.to_s, reset_value)
+      expect(ENV).not_to receive(:[]=).with(excluded_option.to_s, reset_value)
 
       subject
     end

@@ -1,4 +1,5 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 require_relative '../../spec_helper'
 require 'annotate/annotate_models'
 require 'annotate/active_record_patch'
@@ -7,51 +8,53 @@ require 'files'
 require 'tmpdir'
 
 describe AnnotateModels do
-  MAGIC_COMMENTS = [
-    '# encoding: UTF-8',
-    '# coding: UTF-8',
-    '# -*- coding: UTF-8 -*-',
-    '#encoding: utf-8',
-    '# encoding: utf-8',
-    '# -*- encoding : utf-8 -*-',
-    "# encoding: utf-8\n# frozen_string_literal: true",
-    "# frozen_string_literal: true\n# encoding: utf-8",
-    '# frozen_string_literal: true',
-    '#frozen_string_literal: false',
-    '# -*- frozen_string_literal : true -*-'
-  ].freeze unless const_defined?(:MAGIC_COMMENTS)
+  unless const_defined?(:MAGIC_COMMENTS)
+    MAGIC_COMMENTS = [
+      '# encoding: UTF-8',
+      '# coding: UTF-8',
+      '# -*- coding: UTF-8 -*-',
+      '#encoding: utf-8',
+      '# encoding: utf-8',
+      '# -*- encoding : utf-8 -*-',
+      "# encoding: utf-8\n# frozen_string_literal: true",
+      "# frozen_string_literal: true\n# encoding: utf-8",
+      '# frozen_string_literal: true',
+      '#frozen_string_literal: false',
+      '# -*- frozen_string_literal : true -*-'
+    ].freeze
+  end
 
   def mock_index(name, params = {})
     double('IndexKeyDefinition',
-           name:          name,
-           columns:       params[:columns] || [],
-           unique:        params[:unique] || false,
-           orders:        params[:orders] || {},
-           where:         params[:where],
-           using:         params[:using])
+           name:,
+           columns: params[:columns] || [],
+           unique: params[:unique] || false,
+           orders: params[:orders] || {},
+           where: params[:where],
+           using: params[:using])
   end
 
   def mock_foreign_key(name, from_column, to_table, to_column = 'id', constraints = {})
     double('ForeignKeyDefinition',
-           name:         name,
-           column:       from_column,
-           to_table:     to_table,
-           primary_key:  to_column,
-           on_delete:    constraints[:on_delete],
-           on_update:    constraints[:on_update])
+           name:,
+           column: from_column,
+           to_table:,
+           primary_key: to_column,
+           on_delete: constraints[:on_delete],
+           on_update: constraints[:on_update])
   end
 
   def mock_check_constraint(name, expression)
     double('CheckConstraintDefinition',
-           name:       name,
-           expression: expression)
+           name:,
+           expression:)
   end
 
   def mock_connection(indexes = [], foreign_keys = [], check_constraints = [])
     double('Conn',
-           indexes:      indexes,
-           foreign_keys: foreign_keys,
-           check_constraints: check_constraints,
+           indexes:,
+           foreign_keys:,
+           check_constraints:,
            supports_foreign_keys?: true,
            supports_check_constraints?: true,
            table_exists?: true)
@@ -60,13 +63,13 @@ describe AnnotateModels do
   # rubocop:disable Metrics/ParameterLists
   def mock_class(table_name, primary_key, columns, indexes = [], foreign_keys = [], check_constraints = [])
     options = {
-      connection:       mock_connection(indexes, foreign_keys, check_constraints),
-      table_exists?:    true,
-      table_name:       table_name,
-      primary_key:      primary_key,
-      column_names:     columns.map { |col| col.name.to_s },
-      columns:          columns,
-      column_defaults:  Hash[columns.map { |col| [col.name, col.default] }],
+      connection: mock_connection(indexes, foreign_keys, check_constraints),
+      table_exists?: true,
+      table_name:,
+      primary_key:,
+      column_names: columns.map { |col| col.name.to_s },
+      columns:,
+      column_defaults: Hash[columns.map { |col| [col.name, col.default] }],
       table_name_prefix: ''
     }
 
@@ -291,7 +294,7 @@ describe AnnotateModels do
             let :columns do
               [
                 mock_column(:id, :integer),
-                mock_column(:name, :enum, limit: [:enum1, :enum2])
+                mock_column(:name, :enum, limit: %i[enum1 enum2])
               ]
             end
 
@@ -320,7 +323,7 @@ describe AnnotateModels do
                 mock_column(:bigint,  :integer, unsigned?: true, bigint?: true),
                 mock_column(:bigint,  :bigint,  unsigned?: true),
                 mock_column(:float,   :float,   unsigned?: true),
-                mock_column(:decimal, :decimal, unsigned?: true, precision: 10, scale: 2),
+                mock_column(:decimal, :decimal, unsigned?: true, precision: 10, scale: 2)
               ]
             end
 
@@ -406,7 +409,7 @@ describe AnnotateModels do
               end
             end
 
-            context 'with Globalize gem' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+            context 'with Globalize gem' do
               let :translation_klass do
                 double('Folder::Post::Translation',
                        to_s: 'Folder::Post::Translation',
@@ -414,7 +417,7 @@ describe AnnotateModels do
                          mock_column(:id, :integer, limit: 8),
                          mock_column(:post_id, :integer, limit: 8),
                          mock_column(:locale, :string, limit: 50),
-                         mock_column(:title, :string, limit: 50),
+                         mock_column(:title, :string, limit: 50)
                        ])
               end
 
@@ -427,7 +430,7 @@ describe AnnotateModels do
               let :columns do
                 [
                   mock_column(:id, :integer, limit: 8),
-                  mock_column(:author_name, :string, limit: 50),
+                  mock_column(:author_name, :string, limit: 50)
                 ]
               end
 
@@ -452,7 +455,7 @@ describe AnnotateModels do
 
           context 'when the primary key is an array (using composite_primary_keys)' do
             let :primary_key do
-              [:a_id, :b_id]
+              %i[a_id b_id]
             end
 
             let :columns do
@@ -542,10 +545,10 @@ describe AnnotateModels do
                 context 'when one of indexes includes ordered index key' do
                   let :columns do
                     [
-                      mock_column("id", :integer),
-                      mock_column("firstname", :string),
-                      mock_column("surname", :string),
-                      mock_column("value", :string)
+                      mock_column('id', :integer),
+                      mock_column('firstname', :string),
+                      mock_column('surname', :string),
+                      mock_column('value', :string)
                     ]
                   end
 
@@ -553,7 +556,7 @@ describe AnnotateModels do
                     [
                       mock_index('index_rails_02e851e3b7', columns: ['id']),
                       mock_index('index_rails_02e851e3b8',
-                                 columns: %w(firstname surname value),
+                                 columns: %w[firstname surname value],
                                  orders: { 'surname' => :asc, 'value' => :desc })
                     ]
                   end
@@ -585,10 +588,10 @@ describe AnnotateModels do
                 context 'when one of indexes includes "where" clause' do
                   let :columns do
                     [
-                      mock_column("id", :integer),
-                      mock_column("firstname", :string),
-                      mock_column("surname", :string),
-                      mock_column("value", :string)
+                      mock_column('id', :integer),
+                      mock_column('firstname', :string),
+                      mock_column('surname', :string),
+                      mock_column('value', :string)
                     ]
                   end
 
@@ -596,7 +599,7 @@ describe AnnotateModels do
                     [
                       mock_index('index_rails_02e851e3b7', columns: ['id']),
                       mock_index('index_rails_02e851e3b8',
-                                 columns: %w(firstname surname),
+                                 columns: %w[firstname surname],
                                  where: 'value IS NOT NULL')
                     ]
                   end
@@ -628,10 +631,10 @@ describe AnnotateModels do
                 context 'when one of indexes includes "using" clause other than "btree"' do
                   let :columns do
                     [
-                      mock_column("id", :integer),
-                      mock_column("firstname", :string),
-                      mock_column("surname", :string),
-                      mock_column("value", :string)
+                      mock_column('id', :integer),
+                      mock_column('firstname', :string),
+                      mock_column('surname', :string),
+                      mock_column('value', :string)
                     ]
                   end
 
@@ -639,7 +642,7 @@ describe AnnotateModels do
                     [
                       mock_index('index_rails_02e851e3b7', columns: ['id']),
                       mock_index('index_rails_02e851e3b8',
-                                 columns: %w(firstname surname),
+                                 columns: %w[firstname surname],
                                  using: 'hash')
                     ]
                   end
@@ -696,10 +699,10 @@ describe AnnotateModels do
                     is_expected.to eq expected_result
                   end
 
-                  # rubocop:disable RSpec/NestedGroups
                   context 'when the unprefixed table name does not exist' do
                     let :klass do
-                      mock_class(:users, primary_key, columns, indexes, foreign_keys).tap do |mock_klass|
+                      mock_class(:users, primary_key, columns, indexes,
+                                 foreign_keys).tap do |mock_klass|
                         allow(mock_klass).to receive(:table_name_prefix).and_return('my_prefix_')
                         allow(mock_klass.connection).to receive(:table_exists?).with('users').and_return(false)
                         allow(mock_klass.connection).to receive(:indexes).with('users').and_raise('error fetching indexes on nonexistent table')
@@ -712,7 +715,6 @@ describe AnnotateModels do
                       expect(klass.connection).to have_received(:table_exists?).with('users')
                     end
                   end
-                  # rubocop:enable RSpec/NestedGroups
                 end
               end
 
@@ -758,8 +760,8 @@ describe AnnotateModels do
                 context 'when one of indexes is in string form' do
                   let :columns do
                     [
-                      mock_column("id", :integer),
-                      mock_column("name", :string)
+                      mock_column('id', :integer),
+                      mock_column('name', :string)
                     ]
                   end
 
@@ -1944,7 +1946,7 @@ describe AnnotateModels do
 
   describe '.set_defaults' do
     subject do
-      Annotate::Helpers.true?(ENV['show_complete_foreign_keys'])
+      Annotate::Helpers.true?(ENV.fetch('show_complete_foreign_keys', nil))
     end
 
     after :each do
@@ -1986,7 +1988,7 @@ describe AnnotateModels do
           ]
         end
 
-        let(:options) { { additional_file_patterns: additional_file_patterns } }
+        let(:options) { { additional_file_patterns: } }
 
         it 'returns additional_file_patterns in the argument "options"' do
           is_expected.to eq(additional_file_patterns)
@@ -2079,12 +2081,10 @@ describe AnnotateModels do
 
           context 'when a model file outside `model_dir` directory is specified' do
             it 'exits with the status code' do
-              begin
-                subject
-                raise
-              rescue SystemExit => e
-                expect(e.status).to eq(1)
-              end
+              subject
+              raise
+            rescue SystemExit => e
+              expect(e.status).to eq(1)
             end
           end
         end
@@ -2108,12 +2108,10 @@ describe AnnotateModels do
       let(:options) { {} }
 
       it 'exits with the status code' do
-        begin
-          subject
-          raise
-        rescue SystemExit => e
-          expect(e.status).to eq(1)
-        end
+        subject
+        raise
+      rescue SystemExit => e
+        expect(e.status).to eq(1)
       end
     end
   end
@@ -2842,7 +2840,7 @@ describe AnnotateModels do
     def write_model(file_name, file_content)
       fname = File.join(@model_dir, file_name)
       FileUtils.mkdir_p(File.dirname(fname))
-      File.open(fname, 'wb') { |f| f.write file_content }
+      File.binwrite(fname, file_content)
 
       [fname, file_content]
     end
@@ -2861,7 +2859,7 @@ describe AnnotateModels do
 
     ['before', :before, 'top', :top].each do |position|
       it "should put annotation before class if :position == #{position}" do
-        annotate_one_file position: position
+        annotate_one_file(position:)
         expect(File.read(@model_file_name))
           .to eq("#{@schema_info}#{@file_content}")
       end
@@ -2869,7 +2867,7 @@ describe AnnotateModels do
 
     ['after', :after, 'bottom', :bottom].each do |position|
       it "should put annotation after class if position: #{position}" do
-        annotate_one_file position: position
+        annotate_one_file(position:)
         expect(File.read(@model_file_name))
           .to eq("#{@file_content}\n#{@schema_info}")
       end
@@ -2927,7 +2925,8 @@ describe AnnotateModels do
     describe 'with existing annotation => :before' do
       before do
         annotate_one_file position: :before
-        another_schema_info = AnnotateModels.get_schema_info(mock_class(:users, :id, [mock_column(:id, :integer)]), '== Schema Info')
+        another_schema_info = AnnotateModels.get_schema_info(mock_class(:users, :id, [mock_column(:id, :integer)]),
+                                                             '== Schema Info')
         @schema_info = another_schema_info
       end
 
@@ -2950,7 +2949,8 @@ describe AnnotateModels do
     describe 'with existing annotation => :after' do
       before do
         annotate_one_file position: :after
-        another_schema_info = AnnotateModels.get_schema_info(mock_class(:users, :id, [mock_column(:id, :integer)]), '== Schema Info')
+        another_schema_info = AnnotateModels.get_schema_info(mock_class(:users, :id, [mock_column(:id, :integer)]),
+                                                             '== Schema Info')
         @schema_info = another_schema_info
       end
 
@@ -2972,7 +2972,7 @@ describe AnnotateModels do
 
     it 'should skip columns with option[:ignore_columns] set' do
       output = AnnotateModels.get_schema_info(@klass, '== Schema Info',
-                                              :ignore_columns => '(id|updated_at|created_at)')
+                                              ignore_columns: '(id|updated_at|created_at)')
       expect(output.match(/id/)).to be_nil
     end
 
@@ -2982,7 +2982,7 @@ describe AnnotateModels do
         end
       EOS
 
-      klass = mock_class(:'foo_users',
+      klass = mock_class(:foo_users,
                          :id,
                          [
                            mock_column(:id, :integer),
@@ -3060,13 +3060,25 @@ describe AnnotateModels do
       end
 
       it 'displays just the error message with trace disabled (default)' do
-        expect { AnnotateModels.do_annotations model_dir: @model_dir, is_rake: true }.to output(a_string_including("Unable to annotate #{@model_dir}/user.rb: oops")).to_stderr
-        expect { AnnotateModels.do_annotations model_dir: @model_dir, is_rake: true }.not_to output(a_string_including('/spec/annotate/annotate_models_spec.rb:')).to_stderr
+        expect do
+          AnnotateModels.do_annotations model_dir: @model_dir,
+                                        is_rake: true
+        end.to output(a_string_including("Unable to annotate #{@model_dir}/user.rb: oops")).to_stderr
+        expect do
+          AnnotateModels.do_annotations model_dir: @model_dir,
+                                        is_rake: true
+        end.not_to output(a_string_including('/spec/annotate/annotate_models_spec.rb:')).to_stderr
       end
 
       it 'displays the error message and stacktrace with trace enabled' do
-        expect { AnnotateModels.do_annotations model_dir: @model_dir, is_rake: true, trace: true }.to output(a_string_including("Unable to annotate #{@model_dir}/user.rb: oops")).to_stderr
-        expect { AnnotateModels.do_annotations model_dir: @model_dir, is_rake: true, trace: true }.to output(a_string_including('/spec/lib/annotate/annotate_models_spec.rb:')).to_stderr
+        expect do
+          AnnotateModels.do_annotations model_dir: @model_dir, is_rake: true,
+                                        trace: true
+        end.to output(a_string_including("Unable to annotate #{@model_dir}/user.rb: oops")).to_stderr
+        expect do
+          AnnotateModels.do_annotations model_dir: @model_dir, is_rake: true,
+                                        trace: true
+        end.to output(a_string_including('/spec/lib/annotate/annotate_models_spec.rb:')).to_stderr
       end
     end
 
@@ -3082,30 +3094,49 @@ describe AnnotateModels do
       end
 
       it 'displays just the error message with trace disabled (default)' do
-        expect { AnnotateModels.remove_annotations model_dir: @model_dir, is_rake: true }.to output(a_string_including("Unable to deannotate #{@model_dir}/user.rb: oops")).to_stderr
-        expect { AnnotateModels.remove_annotations model_dir: @model_dir, is_rake: true }.not_to output(a_string_including("/user.rb:2:in `<class:User>'")).to_stderr
+        expect do
+          AnnotateModels.remove_annotations model_dir: @model_dir,
+                                            is_rake: true
+        end.to output(a_string_including("Unable to deannotate #{@model_dir}/user.rb: oops")).to_stderr
+        expect do
+          AnnotateModels.remove_annotations model_dir: @model_dir,
+                                            is_rake: true
+        end.not_to output(a_string_including("/user.rb:2:in `<class:User>'")).to_stderr
       end
 
       it 'displays the error message and stacktrace with trace enabled' do
-        expect { AnnotateModels.remove_annotations model_dir: @model_dir, is_rake: true, trace: true }.to output(a_string_including("Unable to deannotate #{@model_dir}/user.rb: oops")).to_stderr
-        expect { AnnotateModels.remove_annotations model_dir: @model_dir, is_rake: true, trace: true }.to output(a_string_including("/user.rb:2:in `<class:User>'")).to_stderr
+        expect do
+          AnnotateModels.remove_annotations model_dir: @model_dir, is_rake: true,
+                                            trace: true
+        end.to output(a_string_including("Unable to deannotate #{@model_dir}/user.rb: oops")).to_stderr
+        expect do
+          AnnotateModels.remove_annotations model_dir: @model_dir, is_rake: true,
+                                            trace: true
+        end.to output(a_string_including("/user.rb:2:in `<class:User>'")).to_stderr
       end
     end
 
     describe 'frozen option' do
-      it "should abort without existing annotation when frozen: true " do
-        expect { annotate_one_file frozen: true }.to raise_error SystemExit, /user.rb needs to be updated, but annotate was run with `--frozen`./
+      it 'should abort without existing annotation when frozen: true' do
+        expect do
+          annotate_one_file frozen: true
+        end.to raise_error SystemExit,
+                           /user.rb needs to be updated, but annotate was run with `--frozen`./
       end
 
-      it "should abort with different annotation when frozen: true " do
+      it 'should abort with different annotation when frozen: true' do
         annotate_one_file
-        another_schema_info = AnnotateModels.get_schema_info(mock_class(:users, :id, [mock_column(:id, :integer)]), '== Schema Info')
+        another_schema_info = AnnotateModels.get_schema_info(mock_class(:users, :id, [mock_column(:id, :integer)]),
+                                                             '== Schema Info')
         @schema_info = another_schema_info
 
-        expect { annotate_one_file frozen: true }.to raise_error SystemExit, /user.rb needs to be updated, but annotate was run with `--frozen`./
+        expect do
+          annotate_one_file frozen: true
+        end.to raise_error SystemExit,
+                           /user.rb needs to be updated, but annotate was run with `--frozen`./
       end
 
-      it "should NOT abort with same annotation when frozen: true " do
+      it 'should NOT abort with same annotation when frozen: true' do
         annotate_one_file
         expect { annotate_one_file frozen: true }.not_to raise_error
       end
@@ -3131,7 +3162,7 @@ describe AnnotateModels do
 
     context 'with a non-class' do
       before do
-        NotAClass = 'foo'.freeze # rubocop:disable Naming/ConstantName
+        NotAClass = 'foo' # rubocop:disable Naming/ConstantName
         allow(AnnotateModels).to receive(:get_model_class).with('foo.rb') { NotAClass }
       end
 

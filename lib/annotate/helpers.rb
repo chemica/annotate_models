@@ -1,17 +1,20 @@
+# frozen_string_literal: true
+
 module Annotate
   # Class for holding helper methods. Done to make lib/annotate.rb less bloated.
   class Helpers
     class << self
       def skip_on_migration?
-        ENV['ANNOTATE_SKIP_ON_DB_MIGRATE'] =~ Constants::TRUE_RE || ENV['skip_on_db_migrate'] =~ Constants::TRUE_RE
+        ENV.fetch('ANNOTATE_SKIP_ON_DB_MIGRATE',
+                  nil) =~ Constants::TRUE_RE || ENV.fetch('skip_on_db_migrate', nil) =~ Constants::TRUE_RE
       end
 
       def include_routes?
-        ENV['routes'] =~ Constants::TRUE_RE
+        ENV.fetch('routes', nil) =~ Constants::TRUE_RE
       end
 
       def include_models?
-        ENV['models'] =~ Constants::TRUE_RE
+        ENV.fetch('models', nil) =~ Constants::TRUE_RE
       end
 
       def true?(val)

@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-unless File.exist?('./Rakefile') || File.exist?('./Gemfile')
-  abort 'Please run annotate from the root of the project.'
-end
+abort 'Please run annotate from the root of the project.' unless File.exist?('./Rakefile') || File.exist?('./Gemfile')
 
 require 'rubygems'
 begin
@@ -11,7 +10,7 @@ begin
 rescue StandardError
 end
 
-here = File.expand_path(File.dirname __FILE__)
+here = __dir__
 $LOAD_PATH << "#{here}/../lib"
 
 require 'annotate'
@@ -24,7 +23,7 @@ options_result = Annotate::Parser.parse(ARGV)
 exit if options_result[:exit]
 
 options = Annotate.setup_options(
-  is_rake: ENV['is_rake'] && !ENV['is_rake'].empty?
+  is_rake: ENV.fetch('is_rake', nil) && !ENV['is_rake'].empty?
 )
 Annotate.eager_load(options) if Annotate::Helpers.include_models?
 
