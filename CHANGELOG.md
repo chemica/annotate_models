@@ -1,10 +1,13 @@
 # Changelog
 
-## [1.0.0] - 2025-06-03
+## [1.0.1]
+Changes
+ - Update description in gemspec
 
+## [1.0.0] - 2025-06-03
 This is a fork of the [annotate](https://github.com/ctran/annotate_models) gem, built for Rails 8 and Ruby 3.2.2+.
 
-### Changed
+Changes
  - Rename gem to "annot8"
  - Update Ruby requirement to >= 3.2.2
  - Update Rails/ActiveRecord requirement to >= 8.0.0
