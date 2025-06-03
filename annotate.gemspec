@@ -25,8 +25,8 @@ Gem::Specification.new do |s|
   s.add_dependency('rake', '>= 10.4', '< 14.0')
 
   s.metadata = {
-    'bug_tracker_uri' => 'https://github.com/ctran/annotate_models/issues/',
-    'source_code_uri' => 'https://github.com/ctran/annotate_models.git',
+    'bug_tracker_uri' => 'https://github.com/chemica/annotate_models/issues/',
+    'source_code_uri' => 'https://github.com/chemica/annotate_models.git',
     'rubygems_mfa_required' => 'true'
   }
 end

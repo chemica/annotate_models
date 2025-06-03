@@ -43,7 +43,7 @@ namespace :gem do
       # for more options.
       gem.version = Annotate.version
       gem.name = 'annotate'
-      gem.homepage = 'http://github.com/ctran/annotate_models'
+      gem.homepage = 'http://github.com/chemica/annotate_models'
       gem.rubyforge_project = 'annotate'
       gem.license = 'Ruby'
       gem.summary = 'Annotates Rails Models, routes, fixtures, and others based on the database schema.'

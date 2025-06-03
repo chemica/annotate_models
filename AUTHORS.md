@@ -2,9 +2,9 @@
 
 - Original code by: Dave Thomas -- Pragmatic Programmers, LLC <http://agilewebdevelopment.com/plugins/annotate_models>
 - Overhauled by: Alex Chaffee <http://alexch.github.com> alex@stinky.com
-- Gemmed by: Cuong Tran <http://github.com/ctran> ctran@pragmaquest.com
 - Maintained by: Alex Chaffee and Cuong Tran
-- Homepage: http://github.com/ctran/annotate_models
+- Homepage: http://github.com/chemica/annotate_models
+- Forked and updated for Rails 8 by: Benjamin Dunkley - ben@chemica.co.uk
 
 ### With help from:
 
