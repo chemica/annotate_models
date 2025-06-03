@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require_relative 'support/file_exists_patch'
+
 if ENV['COVERAGE']
   require 'coveralls'
   require 'codeclimate-test-reporter'
