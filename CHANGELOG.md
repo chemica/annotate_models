@@ -1,14 +1,17 @@
-Please see https://github.com/ctran/annotate_models/releases for changes between releases.
+# Changelog
 
-## 1.0.0
-annot8 fork
+## [1.0.0] - 2025-06-03
 
+This is a fork of the [annotate](https://github.com/ctran/annotate_models) gem, built for Rails 8 and Ruby 3.2.2+.
+
+### Changed
+ - Rename gem to "annot8"
+ - Update Ruby requirement to >= 3.2.2
+ - Update Rails/ActiveRecord requirement to >= 8.0.0
+ - Update repository links to point to chemica/annotate_models
  - Bump gem versions
  - Fix tests and linting
  - Fix string literals for new Ruby versions
- - Fix Rails 8 compatibility
- - Set minimum Rails version to 8
- - Set minimum Ruby version to 3.2.2
 
 ## 3.1.1
 Changes

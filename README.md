@@ -1,12 +1,10 @@
 ## Annotate (aka AnnotateModels)
 
 [![Gem Version](https://badge.fury.io/rb/annot8.svg)](http://badge.fury.io/rb/annot8)
-[![Downloads count](https://img.shields.io/gem/dt/annotate.svg?style=flat)](https://rubygems.org/gems/annot8)
+[![Downloads count](https://img.shields.io/gem/dt/annot8.svg?style=flat)](https://rubygems.org/gems/annot8)
 [![CI Status](https://github.com/chemica/annotate_models/workflows/CI/badge.svg)](https://github.com/chemica/annotate_models/actions?workflow=CI)
-[![Coveralls](https://coveralls.io/repos/chemica/annotate_models/badge.svg?branch=develop)](https://coveralls.io/r/chemica/annotate_models?branch=develop)
-[![Maintenability](https://codeclimate.com/github/chemica/annotate_models/badges/gpa.svg)](https://codeclimate.com/github/chemica/annotate_models)
 
-**This is a fork of the [annotate](https://github.com/chemica/annotate_models) gem, built for Rails 8 and Ruby 3.2.2+.**
+**This is a fork of the [annotate](https://github.com/ctran/annotate_models) gem, built for Rails 8 and Ruby 3.2.2+.**
 
 Add a comment summarizing the current schema to the top or bottom of each of your...
 
@@ -84,7 +82,7 @@ Into Gemfile from rubygems.org:
 
 ```ruby
 group :development do
-  gem 'annot8'
+  gem "annot8"
 end
 ```
 
@@ -92,7 +90,7 @@ Into Gemfile from Github:
 
 ```ruby
 group :development do
-  gem 'annot8', git: 'https://github.com/chemica/annotate_models.git'
+  gem "annot8", git: "https://github.com/chemica/annotate_models.git"
 end
 ```
 
@@ -102,10 +100,10 @@ Into environment gems from rubygems.org:
 
 Into environment gems from Github checkout:
 
-    git clone https://github.com/chemica/annotate_models.git annotate_models
-    cd annotate_models
+    git clone https://github.com/chemica/annotate_models.git annot8
+    cd annot8
     rake gem
-    gem install dist/annotate-*.gem
+    gem install dist/annot8-*.gem
 
 ## Usage
 
