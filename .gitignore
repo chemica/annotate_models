@@ -3,12 +3,10 @@
 .bundle
 .gems
 .rbenv-version
-.ruby-*
 /.idea/
 /.rbx
 /.rvmrc
 /.yardoc/*
-/Gemfile.lock
 /coverage/*
 /dist
 /doc/*
