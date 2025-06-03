@@ -1,7 +1,7 @@
 inherit_from:
   - .rubocop_todo.yml
 
-require:
+plugins:
   - rubocop-rake
   - rubocop-rspec
 
@@ -16,3 +16,8 @@ AllCops:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  # EnforcedStyle: always
+  SafeAutoCorrect: true

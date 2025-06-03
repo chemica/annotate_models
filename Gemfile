@@ -1,11 +1,15 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 gem 'activerecord', '>= 8.0.0', '< 9', require: false
+gem 'json', '~> 2.7.0'
 gem 'rake', require: false
 
 group :development do
   gem 'bump'
   gem 'mg', require: false
+  gem 'ruby-lsp', require: false
   gem 'travis', require: false
   platforms :mri, :mingw do
     gem 'yard', require: false
